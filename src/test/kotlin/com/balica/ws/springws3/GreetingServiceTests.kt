@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 
 @DataJpaTest
 class GreetingServiceTests @Autowired constructor(val entityManager: TestEntityManager, val greetingService: GreetingService) {
@@ -15,7 +17,8 @@ class GreetingServiceTests @Autowired constructor(val entityManager: TestEntityM
         val greeting = GreetingEntity("Hello tester")
         entityManager.persist(greeting)
         entityManager.flush()
-        val found = greetingService.findTopBy()
+        val pageReq = PageRequest.of(1, 1, Sort.Direction.fromString("ASC"), "text")
+        val found = greetingService.findAll(pageReq)
         found.forEach { assertThat(it).isEqualTo(greeting) }
     }
 
