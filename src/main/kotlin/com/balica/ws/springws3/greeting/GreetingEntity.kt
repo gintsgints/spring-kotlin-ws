@@ -6,6 +6,6 @@ import javax.persistence.Id
 
 @Entity
 class GreetingEntity (
-        @Id @GeneratedValue var id: Long? = null,
-        val text: String
+  val text: String,
+  @Id @GeneratedValue var id: Long? = null
 )

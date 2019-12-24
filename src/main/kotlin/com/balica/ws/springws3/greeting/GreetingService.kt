@@ -4,4 +4,5 @@ import org.springframework.data.repository.CrudRepository
 
 interface GreetingService : CrudRepository<GreetingEntity, Long> {
     fun findTopBy(): Iterable<GreetingEntity>
+    fun save(entity: GreetingEntity): GreetingEntity
 }
