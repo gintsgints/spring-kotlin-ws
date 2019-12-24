@@ -30,6 +30,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("mysql:mysql-connector-java:8.0.18")
+    implementation("org.springdoc:springdoc-openapi-core:1.1.49")
+    implementation("org.springdoc:springdoc-openapi-ui:1.1.49")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
