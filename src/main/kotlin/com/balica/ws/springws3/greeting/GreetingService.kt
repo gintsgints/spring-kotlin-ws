@@ -12,6 +12,10 @@ public class GreetingService(private val greetingRepository: GreetingRepository)
         return greetingRepository.findAll(pageRequest)
     }
 
+    fun findContainingText(text: String): Iterable<GreetingEntity> {
+        return greetingRepository.findGreetingByText(text)
+    }
+
     fun findById(id: Long): GreetingEntity {
         return greetingRepository.findById(id).orElse(null)
                 ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, """Greeting with ID:${id.toString()} not found""")
