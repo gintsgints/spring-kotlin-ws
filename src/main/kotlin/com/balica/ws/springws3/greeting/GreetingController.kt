@@ -18,23 +18,26 @@ class GreetingController(private val service: GreetingService) {
             @RequestParam("size") size: Int,
             @RequestParam("sortDir") sortDir: String,
             @RequestParam("sort") sort: String
-    ): Page<GreetingEntity> {
+    ): Page<Greeting> {
         val pageReq = PageRequest.of(page, size, Sort.Direction.fromString(sortDir), sort)
-        return service.findAll(pageReq)
+        return service.findAll(pageReq).map { it.toDto() }
     }
 
     @GetMapping("/{id}")
-    fun getGreeting(@PathVariable id: Long): GreetingEntity {
-        return service.findById(id)
+    fun getGreeting(@PathVariable id: Long): Greeting {
+        return service.findById(id).toDto()
     }
 
     @PostMapping("/", consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun createGreeting(@Valid @RequestBody greeting: GreetingEntity, result: BindingResult, model: Model): GreetingEntity {
-        return service.save(greeting)
+    fun createGreeting(@Valid @RequestBody greeting: Greeting, result: BindingResult, model: Model): Greeting {
+        return service.save(greeting.toEntity()).toDto()
     }
 
     @PostMapping("/{id}", consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun updateGreeting(@PathVariable id: Long, @Valid @RequestBody greeting: GreetingEntity, result: BindingResult, model: Model): GreetingEntity {
-        return service.save(greeting)
+    fun updateGreeting(@PathVariable id: Long, @Valid @RequestBody greeting: Greeting, result: BindingResult, model: Model): Greeting {
+        return service.save(greeting.toEntity()).toDto()
     }
+
+    fun GreetingEntity.toDto() = Greeting(text, id)
+    fun Greeting.toEntity() = GreetingEntity(text, id)
 }
