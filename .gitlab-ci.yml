@@ -1,0 +1,18 @@
+stages:
+  - build
+
+build:
+  stage: build
+  image: gradle:6.0-jdk13
+  variables:
+    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_DRIVER: overlay2
+  services:
+    - name: docker:18.09-dind
+      command: ["--insecure-registry=registry.balcia.com"]
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - ./gradlew jibDockerBuild --image=$CI_REGISTRY_IMAGE -Djib.from.image=openjdk:13-jdk-alpine
+    - docker push $CI_REGISTRY_IMAGE
+  except:
+    - tags
