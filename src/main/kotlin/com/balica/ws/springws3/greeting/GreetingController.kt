@@ -14,12 +14,16 @@ import javax.validation.Valid
 class GreetingController(private val service: GreetingService) {
     @GetMapping("/")
     fun greeting(
-            @RequestParam("page") page: Int,
-            @RequestParam("size") size: Int,
-            @RequestParam("sortDir") sortDir: String,
-            @RequestParam("sort") sort: String
+            @RequestParam("page", required = false, defaultValue = "0") page: Int,
+            @RequestParam("size", required = false, defaultValue = "20") size: Int,
+            @RequestParam("sortDir", required = false, defaultValue = "ASC") sortDir: String,
+            @RequestParam("sort", required = false) sort: String?
     ): Page<Greeting> {
-        val pageReq = PageRequest.of(page, size, Sort.Direction.fromString(sortDir), sort)
+        val pageReq = if (sort === null) {
+            PageRequest.of(page, size)
+        } else {
+            PageRequest.of(page, size, Sort.Direction.fromString(sortDir), sort)
+        }
         return service.findAll(pageReq).map { it.toDto() }
     }
 

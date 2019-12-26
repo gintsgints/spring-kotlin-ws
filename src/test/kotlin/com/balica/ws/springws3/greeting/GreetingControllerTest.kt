@@ -22,15 +22,27 @@ class GreetingControllerTest(@Autowired val mockMvc: MockMvc) {
 
     @Test
     fun `List greetings`() {
-        val gr1 = GreetingEntity("gr1", 1)
-        val gr2 = GreetingEntity("gr2", 2)
-        val pageReq = PageRequest.of(1, 2, Sort.Direction.fromString("ASC"), "text")
-        every { greetingService.findAll(pageReq) } returns PageImpl<GreetingEntity>(listOf(gr1, gr2))
+        val gr1 = GreetingEntity("gr1", 100)
+        val pageReq = PageRequest.of(0, 1, Sort.Direction.fromString("ASC"), "text")
+        every { greetingService.findAll(pageReq) } returns PageImpl<GreetingEntity>(listOf(gr1))
         mockMvc.perform(get("/api/greeting/")
-                .param("page", "1")
-                .param("size", "2")
+                .param("page", "0")
+                .param("size", "1")
                 .param("sortDir", "ASC")
                 .param("sort", "text")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("\$.content.[0].text").value(gr1.text))
+    }
+
+    @Test
+    fun `List greetings with default page`() {
+        val gr1 = GreetingEntity("gr1", 100)
+        val pageReq = PageRequest.of(0, 1)
+        every { greetingService.findAll(pageReq) } returns PageImpl<GreetingEntity>(listOf(gr1))
+        mockMvc.perform(get("/api/greeting/")
+                .param("size", "1")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk)
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
