@@ -11,8 +11,6 @@ build:
     - name: docker:18.09-dind
       command: ["--insecure-registry=registry.balcia.com"]
   script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-    - ./gradlew jibDockerBuild --image=$CI_REGISTRY_IMAGE -Djib.from.image=openjdk:13-jdk-alpine
-    - docker push $CI_REGISTRY_IMAGE
+    - ./gradlew jib --image=$CI_REGISTRY_IMAGE -Djib.allowInsecureRegistries=true -Djib.from.image=openjdk:13-jdk-alpine
   except:
     - tags
