@@ -1,3 +1,10 @@
 package com.balica.ws.springws3.greeting
 
-data class Greeting(val text: String, val id: Long)
+import javax.validation.constraints.NotBlank
+
+data class Greeting(
+        @get: NotBlank
+        val text: String,
+
+        val id: Long?
+)

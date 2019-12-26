@@ -7,7 +7,6 @@ import javax.validation.constraints.NotBlank
 
 @Entity
 class GreetingEntity(
-        @get: NotBlank
         var text: String,
 
         @Id @GeneratedValue

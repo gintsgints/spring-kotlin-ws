@@ -39,5 +39,5 @@ class GreetingController(private val service: GreetingService) {
     }
 
     fun GreetingEntity.toDto() = Greeting(text, id)
-    fun Greeting.toEntity() = GreetingEntity(text, id)
+    fun Greeting.toEntity() = GreetingEntity(text, id ?: 0)
 }
