@@ -33,12 +33,19 @@ dependencies {
     implementation("mysql:mysql-connector-java:8.0.18")
     implementation("org.springdoc:springdoc-openapi-core:1.1.49")
     implementation("org.springdoc:springdoc-openapi-ui:1.1.49")
+    implementation("org.keycloak:keycloak-spring-boot-starter")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testImplementation("com.ninja-squad:springmockk:1.1.3")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.keycloak.bom:keycloak-adapter-bom:7.0.1")
+    }
 }
 
 tasks.withType<Test> {
@@ -48,6 +55,6 @@ tasks.withType<Test> {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "11"
+        jvmTarget = "12"
     }
 }
